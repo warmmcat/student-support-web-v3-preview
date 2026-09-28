@@ -709,3 +709,24 @@ main {
     object-position: 54% 50%;
   }
 }
+
+
+/* Sharper hero image rendering on desktop */
+.bento-hero-visual {
+  transform-style: flat;
+}
+
+.hero-main-image {
+  image-rendering: auto;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: auto;
+  filter: contrast(1.015) saturate(1.015);
+}
+
+@media (min-width: 860px) {
+  .bento-hero-visual {
+    --bento-rx: 0deg !important;
+    --bento-ry: 0deg !important;
+  }
+}
