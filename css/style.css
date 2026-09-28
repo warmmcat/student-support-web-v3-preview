@@ -190,18 +190,6 @@ h1 {
   bottom: -27%;
   background: #718165;
 }
-.quiet-note {
-  position: absolute;
-  left: 8%;
-  bottom: 9%;
-  max-width: 12rem;
-  padding: .85rem 1rem;
-  border: 1px solid rgba(255,255,255,.7);
-  border-radius: 16px;
-  background: rgba(255, 253, 248, .88);
-  box-shadow: 0 12px 35px rgba(53, 56, 50, .12);
-  font-weight: 700;
-}
 
 .section { padding: 4.5rem 0; }
 .section-heading { max-width: 42rem; margin-bottom: 2rem; }
@@ -705,20 +693,10 @@ main {
   object-position: 52% 50%;
 }
 
-.hero-visual .quiet-note {
-  position: absolute;
-  left: 8%;
-  bottom: 9%;
-  z-index: 3;
-}
-
+.hero-visual 
 @media (max-width: 699px) {
   .hero-main-image {
     object-position: 54% 50%;
   }
 
-  .hero-visual .quiet-note {
-    left: 6%;
-    bottom: 6%;
-  }
-}
+  .hero-visual }
