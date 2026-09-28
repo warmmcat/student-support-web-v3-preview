@@ -647,20 +647,31 @@ main {
   contain: layout paint style;
   isolation: isolate;
   translate: 0 0;
+  pointer-events: none;
 }
 
-.bento-card > * {
-  z-index: 1;
+.bento-card::before,
+.bento-card::after {
+  pointer-events: none;
+}
+
+.bento-card a,
+.bento-card button,
+.bento-card input,
+.bento-card textarea,
+.bento-card select,
+.bento-card iframe,
+.bento-card [role="button"] {
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
 }
 
 .feedback-panel,
-.feedback-panel button,
-.feedback-panel a,
 .feedback-form-wrap,
 .feedback-form-frame {
   position: relative;
   z-index: 5;
-  pointer-events: auto;
 }
 
 .feedback-toggle {
@@ -676,7 +687,6 @@ main {
   }
 }
 
-
 /* Uploaded hero visual */
 .hero-visual.bento-card {
   background: #eee5d8;
@@ -691,12 +701,11 @@ main {
   height: 100%;
   object-fit: cover;
   object-position: 52% 50%;
+  pointer-events: none;
 }
 
-.hero-visual 
 @media (max-width: 699px) {
   .hero-main-image {
     object-position: 54% 50%;
   }
-
-  .hero-visual }
+}
