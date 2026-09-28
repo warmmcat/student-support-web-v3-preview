@@ -2,7 +2,7 @@
 
 const drawStylesheet = document.createElement('link');
 drawStylesheet.rel = 'stylesheet';
-drawStylesheet.href = 'css/draw.css?v=20260823-1';
+drawStylesheet.href = 'css/draw.css?v=20260928-visual1';
 document.head.append(drawStylesheet);
 
 const v2Stylesheet = document.createElement('link');
@@ -89,7 +89,10 @@ function revealHexagram(hexagram) {
   setResultContent(resultRelationships, hexagram.relationships, '關於人際');
   setResultContent(resultStress, hexagram.stress, '壓力調適');
   setResultContent(resultMessage, hexagram.message, '給同學的一句話');
-  if (drawAnimation) drawAnimation.hidden = true;
+  if (drawAnimation) {
+    drawAnimation.classList.remove('is-spinning');
+    drawAnimation.hidden = true;
+  }
   resultCard.hidden = false;
   setDrawingState(false);
   window.requestAnimationFrame(() => {
@@ -111,6 +114,9 @@ async function drawHexagram() {
   window.StudentSupportStats?.recordDraw(hexagram);
   if (drawAnimation) {
     drawAnimation.hidden = false;
+    drawAnimation.classList.remove('is-spinning');
+    void drawAnimation.offsetWidth;
+    drawAnimation.classList.add('is-spinning');
     window.requestAnimationFrame(() => drawAnimation.scrollIntoView({ behavior: 'smooth', block: 'center' }));
   }
 
