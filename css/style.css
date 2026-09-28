@@ -652,3 +652,39 @@ main {
     transform: none !important;
   }
 }
+
+
+/* Interaction and compositing hardening */
+.bento-card {
+  contain: layout paint style;
+  isolation: isolate;
+  translate: 0 0;
+}
+
+.bento-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.feedback-panel,
+.feedback-panel button,
+.feedback-panel a,
+.feedback-form-wrap,
+.feedback-form-frame {
+  position: relative;
+  z-index: 5;
+  pointer-events: auto;
+}
+
+.feedback-toggle {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bento-card {
+    transition:
+      border-color .22s ease-out,
+      box-shadow .22s ease-out;
+  }
+}
