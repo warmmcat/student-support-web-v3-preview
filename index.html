@@ -16,7 +16,7 @@
   <script src="js/hexagrams-7.js" defer></script>
   <script src="js/hexagrams-8.js" defer></script>
   <script src="js/stats.js?v=20260928-1" defer></script>
-  <script src="js/app.js?v=20260928-visual1" defer></script>
+  <script src="js/app.js?v=20260928-visual2" defer></script>
   <script src="js/feedback-form.js?v=20260928-1" defer></script>
   <script src="js/scroll-depth.js?v=20260928-visual1" defer></script>
   <script src="js/reset-draw.js?v=20260823-1" defer></script>
@@ -65,35 +65,41 @@
 
         <div class="draw-animation" id="draw-animation" role="status" aria-live="polite" aria-label="正在為你轉動心靈輪盤" hidden>
           <div class="fortune-stage" aria-hidden="true">
-            <div class="stage-glow"></div>
+            <div class="iso-haze"></div>
+            <div class="iso-platform iso-platform-main"></div>
+            <div class="iso-platform iso-platform-step iso-step-a"></div>
+            <div class="iso-platform iso-platform-step iso-step-b"></div>
+            <div class="iso-pillar iso-pillar-a"></div>
+            <div class="iso-pillar iso-pillar-b"></div>
+            <div class="iso-arch"></div>
+
+            <div class="wheel-shrine">
+              <div class="bagua-spinner">
+                <span class="bagua-symbol">☯</span>
+                <span class="trigram trigram-1">☰</span>
+                <span class="trigram trigram-2">☱</span>
+                <span class="trigram trigram-3">☲</span>
+                <span class="trigram trigram-4">☳</span>
+                <span class="trigram trigram-5">☴</span>
+                <span class="trigram trigram-6">☵</span>
+                <span class="trigram trigram-7">☶</span>
+                <span class="trigram trigram-8">☷</span>
+              </div>
+              <span class="shrine-post"></span>
+              <span class="shrine-foot"></span>
+            </div>
+
             <div class="fortune-person">
               <span class="person-shadow"></span>
               <span class="person-head"></span>
-              <span class="person-hair"></span>
               <span class="person-body"></span>
               <span class="person-arm person-arm-back"></span>
               <span class="person-arm person-arm-front"></span>
               <span class="person-leg person-leg-left"></span>
               <span class="person-leg person-leg-right"></span>
             </div>
-            <div class="fortune-wheel-wrap">
-              <span class="wheel-pointer"></span>
-              <div class="fortune-wheel" id="fortune-wheel">
-                <span class="wheel-label wheel-label-1">☰</span>
-                <span class="wheel-label wheel-label-2">☱</span>
-                <span class="wheel-label wheel-label-3">☲</span>
-                <span class="wheel-label wheel-label-4">☳</span>
-                <span class="wheel-label wheel-label-5">☴</span>
-                <span class="wheel-label wheel-label-6">☵</span>
-                <span class="wheel-label wheel-label-7">☶</span>
-                <span class="wheel-label wheel-label-8">☷</span>
-                <span class="wheel-center">心</span>
-              </div>
-              <span class="wheel-axle"></span>
-              <span class="wheel-stand"></span>
-            </div>
           </div>
-          <p>轉一轉，讓此刻的心意慢慢落定……</p>
+          <p>小小走幾步，替此刻的自己轉動輪盤……</p>
         </div>
 
         <article class="result-card" id="result-card" aria-labelledby="result-title" aria-live="polite" hidden>
