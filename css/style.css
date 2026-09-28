@@ -399,52 +399,239 @@ h1 {
   }
 }
 
-/* v3 visual refresh: layered section depth */
+
+/* v3 Bento Grid visual system */
+body {
+  overflow-x: clip;
+}
+
 main {
-  perspective: 1400px;
-  perspective-origin: 50% 38vh;
+  perspective: 1800px;
+  perspective-origin: 50% 42vh;
 }
 
 .depth-section {
   position: relative;
-  width: min(calc(100% - 24px), 1440px);
+  width: 100%;
   margin-inline: auto;
-  border-radius: clamp(26px, 4vw, 48px);
-  overflow: clip;
-  transform:
-    perspective(1400px)
-    translate3d(0, var(--depth-y, 0px), var(--depth-z, 0px))
-    scale(var(--depth-scale, 1));
-  transform-origin: center 28%;
-  opacity: var(--depth-opacity, 1);
-  box-shadow: 0 30px 90px rgba(55, 50, 42, var(--depth-shadow, .08));
-  will-change: transform, opacity;
+  border-radius: 0;
+  overflow: visible;
+  transform: none;
+  opacity: 1;
+  box-shadow: none;
 }
 
-.hero.depth-section {
-  margin-top: 14px;
+.bento-section {
+  position: relative;
+  padding-block: clamp(2.2rem, 5vw, 5.2rem);
+}
+
+.hero.bento-section {
+  margin-top: 0;
   background:
-    radial-gradient(circle at 84% 18%, rgba(216, 168, 122, .24), transparent 24%),
-    linear-gradient(145deg, rgba(255,253,248,.98), rgba(239,229,214,.8));
+    radial-gradient(circle at 82% 12%, rgba(216,168,122,.18), transparent 26%),
+    linear-gradient(180deg, rgba(255,253,248,.72), rgba(248,242,232,0));
 }
 
-#services.depth-section {
-  background: linear-gradient(150deg, rgba(255,253,248,.95), rgba(244,237,226,.92));
+#services.bento-section {
+  background:
+    radial-gradient(circle at 12% 22%, rgba(110,128,100,.09), transparent 25%);
 }
 
-.help-section.depth-section {
-  background: linear-gradient(145deg, #e9dfd1, #dfd3c3);
+.help-section.bento-section {
+  background:
+    linear-gradient(180deg, rgba(232,223,209,.62), rgba(232,223,209,.28));
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(.85rem, 1.7vw, 1.4rem);
+  align-items: start;
+  perspective: 1600px;
+  transform-style: preserve-3d;
+}
+
+.bento-card {
+  --bento-y: 0px;
+  --bento-z: 0px;
+  --bento-rx: 0deg;
+  --bento-ry: 0deg;
+  --bento-scale: 1;
+  position: relative;
+  min-width: 0;
+  border: 1px solid rgba(110,128,100,.16);
+  border-radius: clamp(22px, 2.4vw, 34px);
+  background: rgba(255,253,248,.86);
+  box-shadow:
+    0 18px 50px rgba(72,65,54,.08),
+    0 2px 0 rgba(255,255,255,.6) inset;
+  transform:
+    translate3d(0, var(--bento-y), var(--bento-z))
+    rotateX(var(--bento-rx))
+    rotateY(var(--bento-ry))
+    scale(var(--bento-scale));
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.bento-card::after {
+  position: absolute;
+  content: "";
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(145deg, rgba(255,255,255,.20), transparent 48%);
+  pointer-events: none;
+}
+
+.hero-copy.bento-card {
+  grid-column: span 7;
+  padding: clamp(1.6rem, 4vw, 3.4rem);
+  background:
+    linear-gradient(145deg, rgba(255,253,248,.96), rgba(241,234,221,.92));
+}
+
+.hero-visual.bento-card {
+  grid-column: span 5;
+  min-height: clamp(360px, 48vw, 520px);
+  box-shadow:
+    0 22px 55px rgba(84,75,59,.10),
+    0 2px 0 rgba(255,255,255,.6) inset;
+}
+
+.bento-services-grid > .section-heading {
+  grid-column: span 7;
+  max-width: none;
+  min-height: 280px;
+  margin: 0;
+  padding: clamp(1.5rem, 3.4vw, 2.8rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: linear-gradient(145deg, #f0eadf, #fffdf8);
+}
+
+.bento-card-grid {
+  display: contents;
+}
+
+.bento-services-grid .feature-card {
+  min-height: 280px;
+}
+
+.bento-services-grid .bento-feature-primary {
+  grid-column: span 5;
+  background: linear-gradient(145deg, #dfe7d9, #f3f3ec);
+}
+
+.bento-services-grid .feature-card:not(.bento-feature-primary) {
+  grid-column: span 6;
+}
+
+.help-layout.bento-grid {
+  gap: clamp(.85rem, 1.7vw, 1.4rem);
+}
+
+.bento-help-copy {
+  grid-column: span 8;
+  padding: clamp(1.5rem, 3.5vw, 3rem);
+  background: rgba(255,253,248,.90);
+}
+
+.bento-help-panel {
+  grid-column: span 4;
+  padding: clamp(1.3rem, 2.7vw, 2rem);
+  background: linear-gradient(145deg, #f7f2e9, #fffdf8);
+}
+
+.site-footer.bento-footer-section {
+  padding-top: clamp(2.8rem, 6vw, 5.5rem);
+}
+
+.bento-footer-grid {
+  align-items: start;
+}
+
+.bento-counseling-card {
+  grid-column: span 8;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border-color: rgba(255,255,255,.13);
+  background: linear-gradient(145deg, rgba(72,84,70,.88), rgba(49,57,48,.96));
+  color: #f5f0e8;
+}
+
+.bento-contact-card {
+  grid-column: span 4;
+  padding: clamp(1.4rem, 2.5vw, 2rem);
+  border-color: rgba(255,255,255,.14);
+  background: linear-gradient(145deg, rgba(255,255,255,.10), rgba(255,255,255,.045));
+  color: #f5f0e8;
+}
+
+.bento-contact-card span {
+  color: #d4dbd1;
+}
+
+.bento-card:hover {
+  border-color: rgba(110,128,100,.28);
+  box-shadow:
+    0 24px 65px rgba(72,65,54,.11),
+    0 2px 0 rgba(255,255,255,.7) inset;
+}
+
+@media (max-width: 859px) {
+  .bento-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .hero-copy.bento-card,
+  .hero-visual.bento-card,
+  .bento-services-grid > .section-heading,
+  .bento-services-grid .bento-feature-primary,
+  .bento-services-grid .feature-card:not(.bento-feature-primary),
+  .bento-help-copy,
+  .bento-help-panel,
+  .bento-counseling-card,
+  .bento-contact-card {
+    grid-column: 1 / -1;
+  }
+
+  .hero-visual.bento-card {
+    min-height: 360px;
+  }
+
+  .bento-services-grid > .section-heading {
+    min-height: 220px;
+  }
 }
 
 @media (max-width: 699px) {
-  .depth-section {
-    width: calc(100% - 12px);
-    border-radius: 24px;
-    box-shadow: 0 20px 55px rgba(55, 50, 42, var(--depth-shadow, .07));
+  .container {
+    width: min(calc(100% - 1rem), var(--container));
   }
 
-  .hero.depth-section {
-    margin-top: 6px;
+  .bento-section {
+    padding-block: 1.3rem;
+  }
+
+  .bento-grid {
+    grid-template-columns: 1fr;
+    gap: .85rem;
+    perspective: 1000px;
+  }
+
+  .bento-card {
+    grid-column: 1 !important;
+    border-radius: 22px;
+  }
+
+  .hero-copy.bento-card,
+  .bento-help-copy,
+  .bento-counseling-card {
+    padding: 1.35rem;
   }
 
   .site-header {
@@ -461,8 +648,7 @@ main {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .depth-section {
+  .bento-card {
     transform: none !important;
-    opacity: 1 !important;
   }
 }
