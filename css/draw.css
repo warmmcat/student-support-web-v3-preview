@@ -329,67 +329,241 @@ button.button:disabled {
 .person-leg-left { left: 17px; }
 .person-leg-right { left: 30px; }
 
+.wheel-pointer {
+  position: absolute;
+  left: 50%;
+  top: -11px;
+  z-index: 9;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 18px solid #c97963;
+  filter: drop-shadow(0 3px 3px rgba(79, 58, 44, .16));
+  transform: translateX(-50%);
+  transform-origin: 50% 0;
+}
+
+.wheel-sparks {
+  position: absolute;
+  left: 61%;
+  top: 33%;
+  z-index: 12;
+  width: 56px;
+  height: 56px;
+  pointer-events: none;
+}
+
+.wheel-sparks span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: #e6af83;
+  opacity: 0;
+}
+
+.wheel-sparks span:nth-child(2n) { background: #9ebf9d; }
+.wheel-sparks span:nth-child(3n) { background: #e4c79d; }
+.wheel-sparks span:nth-child(4n) { background: #a8cfd0; }
+
 .draw-animation.is-spinning .fortune-person {
-  animation: person-walk-path 1.55s cubic-bezier(.32,.62,.38,1) forwards;
+  animation: person-run-jump-land 3.35s cubic-bezier(.28,.72,.28,1) forwards;
 }
 
 .draw-animation.is-spinning .person-leg-left {
-  animation: walk-leg-left .32s ease-in-out 5;
+  animation: run-leg-left .22s ease-in-out 7;
 }
 
 .draw-animation.is-spinning .person-leg-right {
-  animation: walk-leg-right .32s ease-in-out 5;
+  animation: run-leg-right .22s ease-in-out 7;
 }
 
 .draw-animation.is-spinning .person-arm-back {
-  animation: walk-arm-back .32s ease-in-out 5;
+  animation:
+    run-arm-back .22s ease-in-out 7,
+    celebrate-arm-back .48s cubic-bezier(.2,1.35,.4,1) 2.55s forwards;
 }
 
 .draw-animation.is-spinning .person-arm-front {
   animation:
-    walk-arm-front .32s ease-in-out 5,
-    reach-wheel .7s ease-in-out 1.5s forwards;
+    run-arm-front .22s ease-in-out 7,
+    slap-wheel .52s cubic-bezier(.18,1.45,.38,1) 1.48s forwards,
+    celebrate-arm-front .48s cubic-bezier(.2,1.35,.4,1) 2.55s forwards;
+}
+
+.draw-animation.is-spinning .person-body {
+  animation: body-squish-stretch 3.1s ease-in-out forwards;
+}
+
+.draw-animation.is-spinning .person-head {
+  animation: head-bob 1.55s ease-in-out forwards;
 }
 
 .draw-animation.is-spinning .bagua-spinner {
-  animation: bagua-spin-continuous .22s linear 1.58s infinite;
+  animation: bagua-spin-continuous .22s linear 1.86s infinite;
 }
 
 .draw-animation.is-spinning .bagua-symbol {
-  animation: bagua-counter-spin-continuous .22s linear 1.58s infinite;
+  animation: bagua-counter-spin-continuous .22s linear 1.86s infinite;
 }
 
-@keyframes person-walk-path {
-  0% { left: 16%; top: 62%; transform: scale(.90) translateY(0); }
-  18% { transform: scale(.92) translateY(-3px); }
-  45% { left: 32%; top: 55%; transform: scale(.95) translateY(0); }
-  68% { transform: scale(.98) translateY(-3px); }
-  100% { left: 50%; top: 45%; transform: scale(1) translateY(0); }
+.draw-animation.is-spinning .wheel-shrine {
+  animation: wheel-impact-wobble .42s ease-out 1.82s 1;
 }
 
-@keyframes walk-leg-left {
-  0%,100% { transform: rotate(12deg); }
-  50% { transform: rotate(-14deg); }
+.draw-animation.is-spinning .wheel-pointer {
+  animation: pointer-bounce .11s ease-in-out 1.84s 6 alternate;
 }
 
-@keyframes walk-leg-right {
-  0%,100% { transform: rotate(-14deg); }
-  50% { transform: rotate(12deg); }
+.draw-animation.is-spinning .wheel-sparks span {
+  animation: spark-burst .62s cubic-bezier(.16,.8,.32,1) 1.84s 1 both;
 }
 
-@keyframes walk-arm-back {
-  0%,100% { transform: rotate(24deg); }
-  50% { transform: rotate(-18deg); }
+.draw-animation.is-spinning .wheel-sparks span:nth-child(1) { --sx: -30px; --sy: -18px; }
+.draw-animation.is-spinning .wheel-sparks span:nth-child(2) { --sx: -18px; --sy: -34px; animation-delay: 1.86s; }
+.draw-animation.is-spinning .wheel-sparks span:nth-child(3) { --sx: 4px; --sy: -38px; animation-delay: 1.88s; }
+.draw-animation.is-spinning .wheel-sparks span:nth-child(4) { --sx: 27px; --sy: -25px; animation-delay: 1.85s; }
+.draw-animation.is-spinning .wheel-sparks span:nth-child(5) { --sx: 34px; --sy: 0px; animation-delay: 1.89s; }
+.draw-animation.is-spinning .wheel-sparks span:nth-child(6) { --sx: 22px; --sy: 24px; animation-delay: 1.87s; }
+.draw-animation.is-spinning .wheel-sparks span:nth-child(7) { --sx: -4px; --sy: 30px; animation-delay: 1.90s; }
+.draw-animation.is-spinning .wheel-sparks span:nth-child(8) { --sx: -27px; --sy: 16px; animation-delay: 1.86s; }
+
+@keyframes person-run-jump-land {
+  0% {
+    left: 16%;
+    top: 62%;
+    transform: scale(.90) translateY(0) rotate(0deg);
+  }
+  12% {
+    transform: scale(.92) translateY(-5px) rotate(-1deg);
+  }
+  24% {
+    left: 27%;
+    top: 58%;
+    transform: scale(.94) translateY(1px) rotate(1deg);
+  }
+  36% {
+    transform: scale(.96) translateY(-5px) rotate(-1deg);
+  }
+  46% {
+    left: 43%;
+    top: 51%;
+    transform: scale(.98) translateY(0) rotate(0deg);
+  }
+  52% {
+    left: 48%;
+    top: 42%;
+    transform: scale(1.02,.96) translateY(-10px) rotate(-2deg);
+  }
+  57% {
+    left: 50%;
+    top: 38%;
+    transform: scale(.96,1.08) translateY(-15px) rotate(-4deg);
+  }
+  62% {
+    left: 51%;
+    top: 45%;
+    transform: scale(1.04,.94) translateY(0) rotate(1deg);
+  }
+  68% {
+    transform: scale(1.10,.84) translateY(4px) rotate(0deg);
+  }
+  73% {
+    transform: scale(.98,1.03) translateY(-3px);
+  }
+  82% {
+    transform: scale(1) translateY(0) rotate(-3deg);
+  }
+  91% {
+    transform: scale(1) translateY(-5px) rotate(3deg);
+  }
+  100% {
+    left: 51%;
+    top: 45%;
+    transform: scale(1) translateY(0) rotate(0deg);
+  }
 }
 
-@keyframes walk-arm-front {
+@keyframes run-leg-left {
+  0%,100% { transform: rotate(22deg); }
+  50% { transform: rotate(-24deg); }
+}
+
+@keyframes run-leg-right {
   0%,100% { transform: rotate(-24deg); }
-  50% { transform: rotate(18deg); }
+  50% { transform: rotate(22deg); }
 }
 
-@keyframes reach-wheel {
+@keyframes run-arm-back {
+  0%,100% { transform: rotate(30deg); }
+  50% { transform: rotate(-28deg); }
+}
+
+@keyframes run-arm-front {
+  0%,100% { transform: rotate(-30deg); }
+  50% { transform: rotate(28deg); }
+}
+
+@keyframes slap-wheel {
   0% { transform: rotate(-24deg); }
-  65%,100% { transform: rotate(-76deg) translateY(-2px); }
+  45% { transform: rotate(-98deg) translateY(-5px); }
+  72% { transform: rotate(-112deg) translateY(-7px); }
+  100% { transform: rotate(-72deg) translateY(-2px); }
+}
+
+@keyframes celebrate-arm-back {
+  from { transform: rotate(18deg); }
+  to { transform: rotate(132deg); }
+}
+
+@keyframes celebrate-arm-front {
+  from { transform: rotate(-72deg); }
+  to { transform: rotate(-132deg); }
+}
+
+@keyframes body-squish-stretch {
+  0%,42% { transform: scale(1,1); }
+  50% { transform: scale(.88,1.22); }
+  61% { transform: scale(.94,1.10); }
+  68% { transform: scale(1.20,.78); }
+  75% { transform: scale(.96,1.06); }
+  82%,100% { transform: scale(1,1); }
+}
+
+@keyframes head-bob {
+  0%,100% { transform: translateY(0); }
+  14% { transform: translateY(-2px); }
+  28% { transform: translateY(1px); }
+  42% { transform: translateY(-2px); }
+  58% { transform: translateY(0); }
+}
+
+@keyframes wheel-impact-wobble {
+  0% { transform: translateZ(50px) rotate(0deg); }
+  26% { transform: translateZ(50px) rotate(-2.5deg) scale(1.02); }
+  52% { transform: translateZ(50px) rotate(1.8deg) scale(.99); }
+  78% { transform: translateZ(50px) rotate(-.8deg); }
+  100% { transform: translateZ(50px) rotate(0deg); }
+}
+
+@keyframes pointer-bounce {
+  from { transform: translateX(-50%) rotate(-13deg) translateY(-1px); }
+  to { transform: translateX(-50%) rotate(13deg) translateY(2px); }
+}
+
+@keyframes spark-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%,-50%) scale(.35);
+  }
+  18% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--sx)), calc(-50% + var(--sy))) scale(0);
+  }
 }
 
 @keyframes bagua-spin-continuous {
@@ -432,13 +606,24 @@ button.button:disabled {
   }
 
   .draw-animation.is-spinning .fortune-person {
-    animation-name: person-walk-path-mobile;
+    animation-name: person-run-jump-land-mobile;
   }
 
-  @keyframes person-walk-path-mobile {
+  @keyframes person-run-jump-land-mobile {
     0% { left: 10%; top: 66%; transform: scale(.72) translateY(0); }
-    45% { left: 29%; top: 57%; transform: scale(.75) translateY(-2px); }
-    100% { left: 47%; top: 48%; transform: scale(.78) translateY(0); }
+    24% { left: 25%; top: 61%; transform: scale(.74) translateY(-3px); }
+    46% { left: 41%; top: 54%; transform: scale(.76) translateY(0); }
+    57% { left: 46%; top: 42%; transform: scale(.76,.84) translateY(-10px) rotate(-3deg); }
+    68% { left: 47%; top: 49%; transform: scale(.84,.66) translateY(3px); }
+    82% { transform: scale(.78) translateY(0) rotate(-2deg); }
+    91% { transform: scale(.78) translateY(-3px) rotate(2deg); }
+    100% { left: 47%; top: 49%; transform: scale(.78) translateY(0); }
+  }
+
+  .wheel-sparks {
+    left: 59%;
+    top: 34%;
+    transform: scale(.78);
   }
 }
 
