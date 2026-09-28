@@ -16,7 +16,7 @@
   <script src="js/hexagrams-7.js" defer></script>
   <script src="js/hexagrams-8.js" defer></script>
   <script src="js/stats.js?v=20260928-1" defer></script>
-  <script src="js/app.js?v=20260928-isometric1" defer></script>
+  <script src="js/app.js?v=20260928-minimal1" defer></script>
   <script src="js/feedback-form.js?v=20260928-bento3" defer></script>
   <script src="js/scroll-depth.js?v=20260928-bento5" defer></script>
   <script src="js/reset-draw.js?v=20260823-1" defer></script>
@@ -66,18 +66,12 @@
         <div class="draw-animation bento-card bento-draw-scene" id="draw-animation" role="status" aria-live="polite" aria-label="心靈抽籤立體場景" data-bento-depth="1.4">
           <div class="fortune-stage" data-view="center" aria-hidden="true">
             <div class="scene-view-controls" aria-label="切換抽籤場景視角">
-              <button type="button" class="scene-view-button" data-scene-view="left" aria-label="左側俯視">左</button>
-              <button type="button" class="scene-view-button is-active" data-scene-view="center" aria-label="正等角俯視">中</button>
-              <button type="button" class="scene-view-button" data-scene-view="right" aria-label="右側俯視">右</button>
+              <button type="button" class="scene-view-button" data-scene-view="left" aria-label="左側俯視"></button>
+              <button type="button" class="scene-view-button is-active" data-scene-view="center" aria-label="正等角俯視"></button>
+              <button type="button" class="scene-view-button" data-scene-view="right" aria-label="右側俯視"></button>
             </div>
             <div class="scene-world">
-              <div class="iso-haze"></div>
             <div class="iso-platform iso-platform-main"></div>
-            <div class="iso-platform iso-platform-step iso-step-a"></div>
-            <div class="iso-platform iso-platform-step iso-step-b"></div>
-            <div class="iso-pillar iso-pillar-a"></div>
-            <div class="iso-pillar iso-pillar-b"></div>
-            <div class="iso-arch"></div>
 
             <div class="wheel-shrine">
               <span class="wheel-pointer"></span>
@@ -97,7 +91,6 @@
             </div>
 
             <div class="wheel-sparks" aria-hidden="true">
-              <span></span><span></span><span></span><span></span>
               <span></span><span></span><span></span><span></span>
             </div>
 
