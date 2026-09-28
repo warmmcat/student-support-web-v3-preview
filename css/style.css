@@ -662,7 +662,6 @@ main {
 }
 
 .bento-card > * {
-  position: relative;
   z-index: 1;
 }
 
@@ -686,5 +685,40 @@ main {
     transition:
       border-color .22s ease-out,
       box-shadow .22s ease-out;
+  }
+}
+
+
+/* Uploaded hero visual */
+.hero-visual.bento-card {
+  background: #eee5d8;
+}
+
+.hero-main-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 52% 50%;
+}
+
+.hero-visual .quiet-note {
+  position: absolute;
+  left: 8%;
+  bottom: 9%;
+  z-index: 3;
+}
+
+@media (max-width: 699px) {
+  .hero-main-image {
+    object-position: 54% 50%;
+  }
+
+  .hero-visual .quiet-note {
+    left: 6%;
+    bottom: 6%;
   }
 }
