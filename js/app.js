@@ -2,7 +2,7 @@
 
 const drawStylesheet = document.createElement('link');
 drawStylesheet.rel = 'stylesheet';
-drawStylesheet.href = 'css/draw.css?v=20260928-minimal1';
+drawStylesheet.href = 'css/draw.css?v=20260928-hill1';
 document.head.append(drawStylesheet);
 
 const v2Stylesheet = document.createElement('link');
@@ -31,7 +31,7 @@ const resultMessage = document.querySelector('#result-message');
 const drawIntro = document.querySelector('.draw-intro');
 const drawNotice = document.querySelector('.draw-notice');
 const fortuneStage = document.querySelector('.fortune-stage');
-const sceneViewButtons = Array.from(document.querySelectorAll('[data-scene-view]'));
+const sceneViewToggle = document.querySelector('#scene-view-toggle');
 const baguaSpinner = document.querySelector('.bagua-spinner');
 
 if (yearTarget) yearTarget.textContent = new Date().getFullYear().toString();
@@ -95,15 +95,19 @@ function startWheelSpin() {
   wheelRampFrame = window.requestAnimationFrame(ramp);
 }
 
-function setSceneView(view) {
-  if (!fortuneStage || !['left', 'center', 'right'].includes(view)) return;
-  fortuneStage.dataset.view = view;
+const sceneViews = ['left', 'center', 'right'];
+let sceneViewIndex = 1;
 
-  sceneViewButtons.forEach((button) => {
-    const active = button.dataset.sceneView === view;
-    button.classList.toggle('is-active', active);
-    button.setAttribute('aria-pressed', String(active));
-  });
+function cycleSceneView() {
+  if (!fortuneStage) return;
+  sceneViewIndex = (sceneViewIndex + 1) % sceneViews.length;
+  fortuneStage.dataset.view = sceneViews[sceneViewIndex];
+
+  if (sceneViewToggle) {
+    sceneViewToggle.classList.remove('is-changing');
+    void sceneViewToggle.offsetWidth;
+    sceneViewToggle.classList.add('is-changing');
+  }
 }
 function updateEligibility() {
   const eligible = !isDrawing;
@@ -199,8 +203,5 @@ async function drawHexagram() {
 if (resultTitle) resultTitle.tabIndex = -1;
 drawButton?.addEventListener('click', drawHexagram);
 drawAgainButton?.addEventListener('click', drawHexagram);
-sceneViewButtons.forEach((button) => {
-  button.setAttribute('aria-pressed', String(button.classList.contains('is-active')));
-  button.addEventListener('click', () => setSceneView(button.dataset.sceneView));
-});
+sceneViewToggle?.addEventListener('click', cycleSceneView);
 updateEligibility();
