@@ -1,10 +1,10 @@
 'use strict';
 
 (() => {
-  const sections = Array.from(document.querySelectorAll('.depth-section'));
+  const cards = Array.from(document.querySelectorAll('.bento-card'));
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  if (!sections.length || reduceMotion.matches) return;
+  if (!cards.length || reduceMotion.matches) return;
 
   let ticking = false;
 
@@ -12,40 +12,39 @@
     return Math.min(max, Math.max(min, value));
   }
 
-  function updateDepth() {
+  function updateBentoDepth() {
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    const viewportCenterY = viewportHeight * 0.52;
+    const isMobile = viewportWidth < 700;
 
-    sections.forEach(section => {
-      const rect = section.getBoundingClientRect();
-      const progress = clamp((viewportHeight - rect.top) / (viewportHeight + rect.height), 0, 1);
+    cards.forEach((card, index) => {
+      if (card.hidden || card.offsetParent === null) return;
 
-      let y = 0;
-      let z = 0;
-      let scale = 1;
-      let opacity = 1;
-      let shadow = .08;
+      const rect = card.getBoundingClientRect();
+      const cardCenterY = rect.top + rect.height / 2;
+      const cardCenterX = rect.left + rect.width / 2;
+      const vertical = clamp((cardCenterY - viewportCenterY) / (viewportHeight * .78), -1.25, 1.25);
+      const horizontal = clamp((cardCenterX / viewportWidth - .5) * 2, -1, 1);
+      const distance = Math.min(Math.abs(vertical), 1);
+      const depthMultiplier = Number(card.dataset.bentoDepth || 1);
 
-      if (progress < .42) {
-        const t = 1 - progress / .42;
-        y = 72 * t;
-        z = 130 * t;
-        scale = 1 + .045 * t;
-        opacity = 1 - .28 * t;
-        shadow = .12 + .08 * t;
-      } else if (progress > .64) {
-        const t = (progress - .64) / .36;
-        y = -34 * t;
-        z = -190 * t;
-        scale = 1 - .085 * t;
-        opacity = 1 - .52 * t;
-        shadow = .08 - .04 * t;
-      }
+      const z = isMobile
+        ? (24 - distance * 50) * depthMultiplier
+        : (72 - distance * 165) * depthMultiplier;
+      const y = vertical * (isMobile ? 10 : 24) * depthMultiplier;
+      const rx = vertical * (isMobile ? -2.2 : -7.2) * depthMultiplier;
+      const ryBase = isMobile ? 0 : (-horizontal * 4.2 + vertical * horizontal * 2.4);
+      const ry = ryBase * depthMultiplier;
+      const scale = isMobile
+        ? 1 - distance * .012
+        : 1 - distance * .032;
 
-      section.style.setProperty('--depth-y', y.toFixed(1) + 'px');
-      section.style.setProperty('--depth-z', z.toFixed(1) + 'px');
-      section.style.setProperty('--depth-scale', scale.toFixed(4));
-      section.style.setProperty('--depth-opacity', opacity.toFixed(3));
-      section.style.setProperty('--depth-shadow', Math.max(.02, shadow).toFixed(3));
+      card.style.setProperty('--bento-y', y.toFixed(1) + 'px');
+      card.style.setProperty('--bento-z', z.toFixed(1) + 'px');
+      card.style.setProperty('--bento-rx', rx.toFixed(2) + 'deg');
+      card.style.setProperty('--bento-ry', ry.toFixed(2) + 'deg');
+      card.style.setProperty('--bento-scale', scale.toFixed(4));
     });
 
     ticking = false;
@@ -54,10 +53,10 @@
   function requestUpdate() {
     if (ticking) return;
     ticking = true;
-    window.requestAnimationFrame(updateDepth);
+    window.requestAnimationFrame(updateBentoDepth);
   }
 
-  updateDepth();
+  updateBentoDepth();
   window.addEventListener('scroll', requestUpdate, { passive: true });
   window.addEventListener('resize', requestUpdate, { passive: true });
 })();
