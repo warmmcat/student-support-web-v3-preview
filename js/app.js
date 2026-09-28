@@ -2,7 +2,7 @@
 
 const drawStylesheet = document.createElement('link');
 drawStylesheet.rel = 'stylesheet';
-drawStylesheet.href = 'css/draw.css?v=20260928-visual3';
+drawStylesheet.href = 'css/draw.css?v=20260928-visual4';
 document.head.append(drawStylesheet);
 
 const v2Stylesheet = document.createElement('link');
