@@ -2,7 +2,7 @@
 
 const drawStylesheet = document.createElement('link');
 drawStylesheet.rel = 'stylesheet';
-drawStylesheet.href = 'css/draw.css?v=20260928-visual2';
+drawStylesheet.href = 'css/draw.css?v=20260928-visual3';
 document.head.append(drawStylesheet);
 
 const v2Stylesheet = document.createElement('link');
@@ -121,7 +121,7 @@ async function drawHexagram() {
   }
 
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-  window.setTimeout(() => revealHexagram(hexagram), reduceMotion ? 900 : 5050);
+  window.setTimeout(() => revealHexagram(hexagram), reduceMotion ? 900 : 4550);
 }
 
 if (resultTitle) resultTitle.tabIndex = -1;
