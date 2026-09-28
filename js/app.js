@@ -2,7 +2,7 @@
 
 const drawStylesheet = document.createElement('link');
 drawStylesheet.rel = 'stylesheet';
-drawStylesheet.href = 'css/draw.css?v=20260928-wheel2';
+drawStylesheet.href = 'css/draw.css?v=20260928-isometric1';
 document.head.append(drawStylesheet);
 
 const v2Stylesheet = document.createElement('link');
@@ -30,11 +30,81 @@ const resultStress = document.querySelector('#result-stress');
 const resultMessage = document.querySelector('#result-message');
 const drawIntro = document.querySelector('.draw-intro');
 const drawNotice = document.querySelector('.draw-notice');
+const fortuneStage = document.querySelector('.fortune-stage');
+const sceneViewButtons = Array.from(document.querySelectorAll('[data-scene-view]'));
+const baguaSpinner = document.querySelector('.bagua-spinner');
 
 if (yearTarget) yearTarget.textContent = new Date().getFullYear().toString();
 
 let previousIndex = -1;
 let isDrawing = false;
+let wheelSpinAnimation = null;
+let wheelRampFrame = 0;
+let wheelStartTimer = 0;
+
+function stopWheelSpin() {
+  window.clearTimeout(wheelStartTimer);
+  if (wheelRampFrame) window.cancelAnimationFrame(wheelRampFrame);
+  wheelRampFrame = 0;
+
+  if (wheelSpinAnimation) {
+    wheelSpinAnimation.cancel();
+    wheelSpinAnimation = null;
+  }
+
+  if (baguaSpinner) {
+    baguaSpinner.style.transform = 'translateX(-50%) rotate(0deg)';
+  }
+}
+
+function startWheelSpin() {
+  if (!baguaSpinner || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+
+  stopWheelSpin();
+
+  wheelSpinAnimation = baguaSpinner.animate(
+    [
+      { transform: 'translateX(-50%) rotate(0deg)' },
+      { transform: 'translateX(-50%) rotate(360deg)' }
+    ],
+    {
+      duration: 520,
+      iterations: Infinity,
+      easing: 'linear'
+    }
+  );
+
+  wheelSpinAnimation.playbackRate = .22;
+  const rampStart = performance.now();
+  const rampDuration = 620;
+  const finalRate = 2.35;
+
+  const ramp = (now) => {
+    if (!wheelSpinAnimation) return;
+    const progress = Math.min(1, (now - rampStart) / rampDuration);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    wheelSpinAnimation.playbackRate = .22 + (finalRate - .22) * eased;
+
+    if (progress < 1) {
+      wheelRampFrame = window.requestAnimationFrame(ramp);
+    } else {
+      wheelRampFrame = 0;
+    }
+  };
+
+  wheelRampFrame = window.requestAnimationFrame(ramp);
+}
+
+function setSceneView(view) {
+  if (!fortuneStage || !['left', 'center', 'right'].includes(view)) return;
+  fortuneStage.dataset.view = view;
+
+  sceneViewButtons.forEach((button) => {
+    const active = button.dataset.sceneView === view;
+    button.classList.toggle('is-active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
+}
 function updateEligibility() {
   const eligible = !isDrawing;
   if (drawButton) drawButton.disabled = !eligible;
@@ -81,6 +151,7 @@ function setDrawingState(active) {
 }
 
 function revealHexagram(hexagram) {
+  stopWheelSpin();
   resultNumber.textContent = `第 ${hexagram.number} 卦`;
   resultTitle.textContent = hexagram.name;
   setResultContent(resultDescription, hexagram.description, '說明');
@@ -117,6 +188,7 @@ async function drawHexagram() {
     drawAnimation.classList.remove('is-spinning');
     void drawAnimation.offsetWidth;
     drawAnimation.classList.add('is-spinning');
+    wheelStartTimer = window.setTimeout(startWheelSpin, 1840);
     window.requestAnimationFrame(() => drawAnimation.scrollIntoView({ behavior: 'smooth', block: 'center' }));
   }
 
@@ -127,4 +199,8 @@ async function drawHexagram() {
 if (resultTitle) resultTitle.tabIndex = -1;
 drawButton?.addEventListener('click', drawHexagram);
 drawAgainButton?.addEventListener('click', drawHexagram);
+sceneViewButtons.forEach((button) => {
+  button.setAttribute('aria-pressed', String(button.classList.contains('is-active')));
+  button.addEventListener('click', () => setSceneView(button.dataset.sceneView));
+});
 updateEligibility();
