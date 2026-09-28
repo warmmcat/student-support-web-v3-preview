@@ -2,7 +2,7 @@
 
 const drawStylesheet = document.createElement('link');
 drawStylesheet.rel = 'stylesheet';
-drawStylesheet.href = 'css/draw.css?v=20260928-hill1';
+drawStylesheet.href = 'css/draw.css?v=20260929-wheel3d1';
 document.head.append(drawStylesheet);
 
 const v2Stylesheet = document.createElement('link');
@@ -28,87 +28,14 @@ const resultStudy = document.querySelector('#result-study');
 const resultRelationships = document.querySelector('#result-relationships');
 const resultStress = document.querySelector('#result-stress');
 const resultMessage = document.querySelector('#result-message');
-const drawIntro = document.querySelector('.draw-intro');
-const drawNotice = document.querySelector('.draw-notice');
-const fortuneStage = document.querySelector('.fortune-stage');
-const sceneViewToggle = document.querySelector('#scene-view-toggle');
-const baguaSpinner = document.querySelector('.bagua-spinner');
 
 if (yearTarget) yearTarget.textContent = new Date().getFullYear().toString();
 
 let previousIndex = -1;
 let isDrawing = false;
-let wheelSpinAnimation = null;
-let wheelRampFrame = 0;
-let wheelStartTimer = 0;
+let activeDrawToken = 0;
+let drawFallbackTimer = 0;
 
-function stopWheelSpin() {
-  window.clearTimeout(wheelStartTimer);
-  if (wheelRampFrame) window.cancelAnimationFrame(wheelRampFrame);
-  wheelRampFrame = 0;
-
-  if (wheelSpinAnimation) {
-    wheelSpinAnimation.cancel();
-    wheelSpinAnimation = null;
-  }
-
-  if (baguaSpinner) {
-    baguaSpinner.style.transform = 'translateX(-50%) rotate(0deg)';
-  }
-}
-
-function startWheelSpin() {
-  if (!baguaSpinner || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
-
-  stopWheelSpin();
-
-  wheelSpinAnimation = baguaSpinner.animate(
-    [
-      { transform: 'translateX(-50%) rotate(0deg)' },
-      { transform: 'translateX(-50%) rotate(360deg)' }
-    ],
-    {
-      duration: 520,
-      iterations: Infinity,
-      easing: 'linear'
-    }
-  );
-
-  wheelSpinAnimation.playbackRate = .22;
-  const rampStart = performance.now();
-  const rampDuration = 620;
-  const finalRate = 2.35;
-
-  const ramp = (now) => {
-    if (!wheelSpinAnimation) return;
-    const progress = Math.min(1, (now - rampStart) / rampDuration);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    wheelSpinAnimation.playbackRate = .22 + (finalRate - .22) * eased;
-
-    if (progress < 1) {
-      wheelRampFrame = window.requestAnimationFrame(ramp);
-    } else {
-      wheelRampFrame = 0;
-    }
-  };
-
-  wheelRampFrame = window.requestAnimationFrame(ramp);
-}
-
-const sceneViews = ['left', 'center', 'right'];
-let sceneViewIndex = 1;
-
-function cycleSceneView() {
-  if (!fortuneStage) return;
-  sceneViewIndex = (sceneViewIndex + 1) % sceneViews.length;
-  fortuneStage.dataset.view = sceneViews[sceneViewIndex];
-
-  if (sceneViewToggle) {
-    sceneViewToggle.classList.remove('is-changing');
-    void sceneViewToggle.offsetWidth;
-    sceneViewToggle.classList.add('is-changing');
-  }
-}
 function updateEligibility() {
   const eligible = !isDrawing;
   if (drawButton) drawButton.disabled = !eligible;
@@ -118,6 +45,7 @@ function updateEligibility() {
 function getRandomIndex(length) {
   if (length <= 1) return 0;
   let index;
+
   if (window.crypto && window.crypto.getRandomValues) {
     const randomValue = new Uint32Array(1);
     do {
@@ -127,6 +55,7 @@ function getRandomIndex(length) {
   } else {
     do index = Math.floor(Math.random() * length); while (index === previousIndex);
   }
+
   return index;
 }
 
@@ -143,19 +72,31 @@ function setResultContent(target, text, category) {
 
 function setDrawingState(active) {
   isDrawing = active;
+
   if (drawButton) {
     drawButton.textContent = active ? '正在抽取一卦…' : '靜心後，抽一卦';
     drawButton.setAttribute('aria-busy', active.toString());
   }
+
   if (drawAgainButton) {
     drawAgainButton.textContent = active ? '正在抽取…' : '再抽一卦';
     drawAgainButton.setAttribute('aria-busy', active.toString());
   }
+
   updateEligibility();
 }
 
-function revealHexagram(hexagram) {
-  stopWheelSpin();
+function clearDrawFallback() {
+  window.clearTimeout(drawFallbackTimer);
+  drawFallbackTimer = 0;
+}
+
+function revealHexagram(hexagram, token) {
+  if (token !== activeDrawToken || !isDrawing) return;
+
+  clearDrawFallback();
+  window.Wheel3D?.stop?.();
+
   resultNumber.textContent = `第 ${hexagram.number} 卦`;
   resultTitle.textContent = hexagram.name;
   setResultContent(resultDescription, hexagram.description, '說明');
@@ -164,12 +105,11 @@ function revealHexagram(hexagram) {
   setResultContent(resultRelationships, hexagram.relationships, '關於人際');
   setResultContent(resultStress, hexagram.stress, '壓力調適');
   setResultContent(resultMessage, hexagram.message, '給同學的一句話');
-  if (drawAnimation) {
-    drawAnimation.classList.remove('is-spinning');
-    drawAnimation.hidden = true;
-  }
+
+  if (drawAnimation) drawAnimation.hidden = true;
   resultCard.hidden = false;
   setDrawingState(false);
+
   window.requestAnimationFrame(() => {
     resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
     resultTitle.focus({ preventScroll: true });
@@ -181,27 +121,45 @@ async function drawHexagram() {
 
   const index = getRandomIndex(window.HEXAGRAMS.length);
   const hexagram = window.HEXAGRAMS[index];
+  const token = ++activeDrawToken;
 
   setDrawingState(true);
   resultCard.hidden = true;
-
   previousIndex = index;
+
   window.StudentSupportStats?.recordDraw(hexagram);
+
   if (drawAnimation) {
     drawAnimation.hidden = false;
-    drawAnimation.classList.remove('is-spinning');
-    void drawAnimation.offsetWidth;
-    drawAnimation.classList.add('is-spinning');
-    wheelStartTimer = window.setTimeout(startWheelSpin, 1840);
-    window.requestAnimationFrame(() => drawAnimation.scrollIntoView({ behavior: 'smooth', block: 'center' }));
+    window.requestAnimationFrame(() => {
+      drawAnimation.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
   }
 
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-  window.setTimeout(() => revealHexagram(hexagram), reduceMotion ? 900 : 5000);
+  if (reduceMotion) {
+    drawFallbackTimer = window.setTimeout(() => revealHexagram(hexagram, token), 900);
+    return;
+  }
+
+  let started = false;
+
+  try {
+    started = window.Wheel3D?.play?.({
+      onComplete: () => revealHexagram(hexagram, token)
+    }) === true;
+  } catch (error) {
+    console.warn('3D draw animation failed; using result fallback.', error);
+  }
+
+  // Safety fallback: guarantees the result still appears if WebGL/CDN animation fails.
+  drawFallbackTimer = window.setTimeout(
+    () => revealHexagram(hexagram, token),
+    started ? 7500 : 1200
+  );
 }
 
 if (resultTitle) resultTitle.tabIndex = -1;
 drawButton?.addEventListener('click', drawHexagram);
 drawAgainButton?.addEventListener('click', drawHexagram);
-sceneViewToggle?.addEventListener('click', cycleSceneView);
 updateEligibility();
