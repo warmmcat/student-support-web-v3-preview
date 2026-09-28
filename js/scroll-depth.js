@@ -61,12 +61,15 @@
       const distance = Math.min(Math.abs(vertical), 1);
       const depthMultiplier = Number(card.dataset.bentoDepth || 1);
 
+      const isImageCard = card.dataset.bentoImageCard === 'true';
       const target = {
         y: vertical * (isMobile ? 7 : 20) * depthMultiplier,
         z: (isMobile ? 12 - distance * 24 : 34 - distance * 74) * depthMultiplier,
-        rx: vertical * (isMobile ? -1.2 : -4.2) * depthMultiplier,
-        ry: (isMobile ? 0 : (-horizontal * 2.6 + vertical * horizontal * 1.3)) * depthMultiplier,
-        scale: isMobile ? 1 - distance * .008 : 1 - distance * .022
+        rx: isImageCard ? 0 : vertical * (isMobile ? -1.2 : -4.2) * depthMultiplier,
+        ry: isImageCard ? 0 : (isMobile ? 0 : (-horizontal * 2.6 + vertical * horizontal * 1.3)) * depthMultiplier,
+        scale: isImageCard
+          ? 1
+          : (isMobile ? 1 - distance * .008 : 1 - distance * .022)
       };
 
       let state = states.get(card);
