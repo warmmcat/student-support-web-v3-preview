@@ -360,11 +360,11 @@ button.button:disabled {
 }
 
 .draw-animation.is-spinning .bagua-spinner {
-  animation: bagua-spin-once 3.15s cubic-bezier(.12,.72,.12,1) 1.58s forwards;
+  animation: bagua-spin-continuous .82s linear 1.58s infinite;
 }
 
 .draw-animation.is-spinning .bagua-symbol {
-  animation: bagua-counter-spin-once 3.15s cubic-bezier(.12,.72,.12,1) 1.58s forwards;
+  animation: bagua-counter-spin-continuous .82s linear 1.58s infinite;
 }
 
 @keyframes person-walk-path {
@@ -400,18 +400,14 @@ button.button:disabled {
   65%,100% { transform: rotate(-76deg) translateY(-2px); }
 }
 
-@keyframes bagua-spin-once {
-  0% { transform: translateX(-50%) rotate(0deg) scale(.98); }
-  22% { transform: translateX(-50%) rotate(600deg) scale(1.02); }
-  72% { transform: translateX(-50%) rotate(1600deg) scale(1); }
-  100% { transform: translateX(-50%) rotate(1900deg) scale(.99); }
+@keyframes bagua-spin-continuous {
+  from { transform: translateX(-50%) rotate(0deg) scale(1); }
+  to { transform: translateX(-50%) rotate(360deg) scale(1); }
 }
 
-@keyframes bagua-counter-spin-once {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  22% { transform: translate(-50%, -50%) rotate(-600deg); }
-  72% { transform: translate(-50%, -50%) rotate(-1600deg); }
-  100% { transform: translate(-50%, -50%) rotate(-1900deg); }
+@keyframes bagua-counter-spin-continuous {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
 }
 
 @media (max-width: 640px) {
