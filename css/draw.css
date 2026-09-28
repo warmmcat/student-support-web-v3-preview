@@ -360,11 +360,11 @@ button.button:disabled {
 }
 
 .draw-animation.is-spinning .bagua-spinner {
-  animation: bagua-spin-continuous .82s linear 1.58s infinite;
+  animation: bagua-spin-continuous .22s linear 1.58s infinite;
 }
 
 .draw-animation.is-spinning .bagua-symbol {
-  animation: bagua-counter-spin-continuous .82s linear 1.58s infinite;
+  animation: bagua-counter-spin-continuous .22s linear 1.58s infinite;
 }
 
 @keyframes person-walk-path {
