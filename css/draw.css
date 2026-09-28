@@ -1295,3 +1295,321 @@ button.button:disabled {
     transform: none;
   }
 }
+
+
+/* Toy-like hill scene */
+.iso-platform-main {
+  display: none !important;
+}
+
+.island-hill {
+  position: absolute;
+  left: 18%;
+  top: 22%;
+  width: 62%;
+  height: 58%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.hill-shadow {
+  position: absolute;
+  left: 11%;
+  bottom: 5%;
+  width: 78%;
+  height: 22%;
+  border-radius: 50%;
+  background: rgba(74,85,104,.10);
+  filter: blur(14px);
+  transform: translateZ(-40px) scaleY(.58);
+}
+
+.hill-base,
+.hill-mid,
+.hill-top {
+  position: absolute;
+  left: 50%;
+  border-radius: 48% 52% 46% 54% / 56% 48% 52% 44%;
+  transform: translateX(-50%) rotate(-4deg);
+}
+
+.hill-base {
+  bottom: 10%;
+  width: 88%;
+  height: 48%;
+  background: #eadfcd;
+  box-shadow:
+    0 16px 0 #ddcfba,
+    0 28px 34px rgba(74,85,104,.08);
+}
+
+.hill-mid {
+  bottom: 24%;
+  width: 76%;
+  height: 42%;
+  background: #d7e7d4;
+  box-shadow: 0 10px 0 #c7d9c4;
+}
+
+.hill-top {
+  bottom: 39%;
+  width: 63%;
+  height: 33%;
+  background: #a8d8a4;
+  box-shadow: 0 8px 0 #96c893;
+}
+
+.hill-path {
+  position: absolute;
+  left: 34%;
+  bottom: 25%;
+  width: 22%;
+  height: 42%;
+  border-radius: 55% 45% 50% 50%;
+  background: #f5e8d3;
+  transform: rotate(22deg) skewY(-8deg);
+  opacity: .96;
+}
+
+.scene-view-controls {
+  top: 15px;
+  right: 15px;
+}
+
+.scene-view-button {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  border: 1px solid rgba(74,85,104,.18);
+  background: rgba(255,255,255,.78);
+  box-shadow: 0 2px 7px rgba(74,85,104,.08);
+}
+
+.scene-view-button::after {
+  inset: 4px;
+  background: #8fcfca;
+}
+
+.scene-view-button:hover {
+  transform: scale(1.12);
+  background: #fff;
+}
+
+.scene-view-button.is-changing {
+  animation: view-dot-pulse .42s ease;
+}
+
+@keyframes view-dot-pulse {
+  0% { transform: scale(1); }
+  45% { transform: scale(.72); }
+  100% { transform: scale(1); }
+}
+
+/* Cute minimal block person */
+.fortune-person {
+  width: 58px;
+  height: 82px;
+}
+
+.person-head {
+  left: 13px;
+  top: -2px;
+  width: 31px;
+  height: 29px;
+  border-radius: 8px;
+  background: #fffdfa;
+  box-shadow:
+    inset -3px -3px 0 rgba(74,85,104,.035),
+    0 4px 9px rgba(74,85,104,.07);
+}
+
+.person-head::before,
+.person-head::after {
+  top: 10px;
+  width: 4px;
+  height: 5px;
+  border-radius: 2px;
+  background: #38434b;
+}
+
+.person-head::before { left: 8px; }
+.person-head::after { right: 8px; }
+
+.person-body {
+  left: 14px;
+  top: 27px;
+  width: 29px;
+  height: 29px;
+  border-radius: 7px;
+  background: #fffdfa;
+}
+
+.person-body::after {
+  position: absolute;
+  content: "";
+  left: 9px;
+  top: 8px;
+  width: 11px;
+  height: 6px;
+  border-radius: 2px;
+  background: #ffd3b6;
+  opacity: .85;
+}
+
+.person-arm {
+  top: 30px;
+  width: 7px;
+  height: 27px;
+  background: #fffdfa;
+}
+
+.person-arm-back { left: 9px; }
+.person-arm-front { left: 42px; }
+
+.person-leg {
+  top: 54px;
+  width: 9px;
+  height: 27px;
+  background: #fffdfa;
+}
+
+.person-leg-left { left: 17px; }
+.person-leg-right { left: 32px; }
+
+.person-shadow {
+  left: 4px;
+  width: 50px;
+  height: 12px;
+  bottom: -2px;
+  opacity: .48;
+}
+
+/* Hill placement: wheel on top, character starts lower on slope */
+.wheel-shrine {
+  left: 60%;
+  top: 23%;
+}
+
+.fortune-person {
+  left: 18%;
+  top: 66%;
+}
+
+.wheel-sparks {
+  left: 60%;
+  top: 30%;
+}
+
+/* Make the Tai Chi / Bagua wheel the visual focus */
+.bagua-spinner {
+  background: #fffdfa;
+  border: 1px solid rgba(56,67,75,.14);
+  box-shadow:
+    inset 0 0 0 5px rgba(168,230,207,.20),
+    0 5px 0 #ddd8cf,
+    0 14px 24px rgba(74,85,104,.075);
+}
+
+.bagua-symbol {
+  color: #2f3c42;
+  font-size: clamp(2.9rem, 7.4vw, 4.7rem);
+}
+
+.trigram {
+  color: #43535a;
+  opacity: .88;
+}
+
+.shrine-post {
+  background: #a0e7e5;
+}
+
+.shrine-foot {
+  background: #c7ceea;
+}
+
+/* Updated path to look like running uphill */
+@keyframes person-run-jump-land {
+  0% {
+    left: 18%;
+    top: 66%;
+    transform: scale(.86) translateY(0) rotate(-3deg);
+  }
+  12% {
+    transform: scale(.88) translateY(-5px) rotate(-4deg);
+  }
+  24% {
+    left: 29%;
+    top: 59%;
+    transform: scale(.91) translateY(1px) rotate(-2deg);
+  }
+  36% {
+    left: 39%;
+    top: 51%;
+    transform: scale(.94) translateY(-5px) rotate(-1deg);
+  }
+  46% {
+    left: 48%;
+    top: 42%;
+    transform: scale(.97) translateY(0) rotate(0deg);
+  }
+  53% {
+    left: 51%;
+    top: 34%;
+    transform: scale(1.02,.96) translateY(-9px) rotate(-2deg);
+  }
+  58% {
+    left: 52%;
+    top: 31%;
+    transform: scale(.97,1.08) translateY(-14px) rotate(-4deg);
+  }
+  63% {
+    left: 52%;
+    top: 39%;
+    transform: scale(1.04,.94) translateY(0) rotate(1deg);
+  }
+  69% {
+    transform: scale(1.09,.86) translateY(3px) rotate(0deg);
+  }
+  76% {
+    transform: scale(.98,1.03) translateY(-3px);
+  }
+  100% {
+    left: 52%;
+    top: 39%;
+    transform: scale(1) translateY(0) rotate(0deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .island-hill {
+    left: 12%;
+    top: 26%;
+    width: 76%;
+    height: 55%;
+  }
+
+  .wheel-shrine {
+    left: 58%;
+    top: 27%;
+  }
+
+  .fortune-person {
+    left: 12%;
+    top: 68%;
+  }
+
+  .wheel-sparks {
+    left: 59%;
+    top: 32%;
+  }
+
+  @keyframes person-run-jump-land-mobile {
+    0% { left: 12%; top: 68%; transform: scale(.70) translateY(0) rotate(-3deg); }
+    24% { left: 26%; top: 61%; transform: scale(.72) translateY(-3px) rotate(-2deg); }
+    46% { left: 41%; top: 51%; transform: scale(.75) translateY(0); }
+    57% { left: 47%; top: 39%; transform: scale(.75,.84) translateY(-9px) rotate(-3deg); }
+    68% { left: 48%; top: 46%; transform: scale(.82,.68) translateY(3px); }
+    100% { left: 48%; top: 46%; transform: scale(.77) translateY(0); }
+  }
+}
