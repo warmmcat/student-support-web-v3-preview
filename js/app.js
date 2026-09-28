@@ -2,7 +2,7 @@
 
 const drawStylesheet = document.createElement('link');
 drawStylesheet.rel = 'stylesheet';
-drawStylesheet.href = 'css/draw.css?v=20260928-visual4';
+drawStylesheet.href = 'css/draw.css?v=20260928-bento1';
 document.head.append(drawStylesheet);
 
 const v2Stylesheet = document.createElement('link');
