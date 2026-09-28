@@ -76,14 +76,6 @@ button.button:disabled {
   display: none;
 }
 
-.draw-animation p {
-  margin: 0;
-  color: var(--color-primary-dark);
-  font-size: 1.05rem;
-  font-weight: 750;
-  letter-spacing: .04em;
-}
-
 .fortune-stage {
   position: relative;
   width: min(100%, 780px);
@@ -642,5 +634,77 @@ button.button:disabled {
 @media (max-width: 640px) {
   .feedback-form-frame {
     min-height: 1120px;
+  }
+}
+
+
+/* Bento layout compatibility for dynamically loaded draw styles */
+.draw-layout.bento-grid {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(.85rem, 1.7vw, 1.4rem);
+  align-items: start;
+}
+
+.draw-intro.bento-card {
+  grid-column: span 5;
+  max-width: none;
+  padding: clamp(1.45rem, 3vw, 2.5rem);
+  position: relative;
+  top: auto;
+  background: linear-gradient(145deg, rgba(255,253,248,.95), rgba(239,229,214,.82));
+}
+
+.draw-animation.bento-card {
+  grid-column: span 7;
+  min-height: 100%;
+  padding: clamp(.6rem, 1.5vw, 1.15rem);
+  background: rgba(248,245,238,.88);
+}
+
+.draw-animation.bento-card .fortune-stage {
+  width: 100%;
+  height: clamp(350px, 42vw, 470px);
+}
+
+.result-card.bento-card {
+  grid-column: 6 / span 7;
+  padding: clamp(1.4rem, 3vw, 2rem);
+}
+
+@media (max-width: 859px) {
+  .draw-layout.bento-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .draw-intro.bento-card,
+  .draw-animation.bento-card,
+  .result-card.bento-card {
+    grid-column: 1 / -1;
+  }
+
+  .draw-intro.bento-card {
+    position: relative;
+    top: auto;
+  }
+}
+
+@media (max-width: 699px) {
+  .draw-layout.bento-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .draw-intro.bento-card,
+  .draw-animation.bento-card,
+  .result-card.bento-card {
+    grid-column: 1;
+  }
+
+  .draw-animation.bento-card {
+    min-height: 0;
+    padding: .45rem;
+  }
+
+  .draw-animation.bento-card .fortune-stage {
+    height: 315px;
   }
 }
