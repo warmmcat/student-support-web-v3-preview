@@ -63,9 +63,9 @@
 
       const target = {
         y: vertical * (isMobile ? 7 : 20) * depthMultiplier,
-        z: (isMobile ? 16 - distance * 32 : 58 - distance * 130) * depthMultiplier,
-        rx: vertical * (isMobile ? -1.5 : -5.2) * depthMultiplier,
-        ry: (isMobile ? 0 : (-horizontal * 3.2 + vertical * horizontal * 1.7)) * depthMultiplier,
+        z: (isMobile ? 12 - distance * 24 : 34 - distance * 74) * depthMultiplier,
+        rx: vertical * (isMobile ? -1.2 : -4.2) * depthMultiplier,
+        ry: (isMobile ? 0 : (-horizontal * 2.6 + vertical * horizontal * 1.3)) * depthMultiplier,
         scale: isMobile ? 1 - distance * .008 : 1 - distance * .022
       };
 
