@@ -1,19 +1,46 @@
 'use strict';
 
-const feedbackToggle = document.querySelector('#feedback-toggle');
-const feedbackFormWrap = document.querySelector('#feedback-form-wrap');
+(() => {
+  function getElements() {
+    return {
+      toggle: document.querySelector('#feedback-toggle'),
+      wrap: document.querySelector('#feedback-form-wrap')
+    };
+  }
 
-if (feedbackToggle && feedbackFormWrap) {
-  feedbackToggle.addEventListener('click', () => {
-    const willOpen = feedbackFormWrap.hidden;
-    feedbackFormWrap.hidden = !willOpen;
-    feedbackToggle.setAttribute('aria-expanded', String(willOpen));
-    feedbackToggle.textContent = willOpen ? '收合留言表單' : '我想留言';
+  function setExpanded(toggle, wrap, expanded) {
+    if (expanded) {
+      wrap.removeAttribute('hidden');
 
-    if (willOpen) {
+      const frame = wrap.querySelector('#feedback-form-frame');
+      if (frame && !frame.src && frame.dataset.src) {
+        frame.src = frame.dataset.src;
+      }
+    } else {
+      wrap.setAttribute('hidden', '');
+    }
+
+    toggle.setAttribute('aria-expanded', String(expanded));
+    toggle.textContent = expanded ? '收合留言表單' : '我想留言';
+
+    if (expanded) {
       window.requestAnimationFrame(() => {
-        feedbackFormWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
     }
+  }
+
+  document.addEventListener('click', (event) => {
+    const toggle = event.target.closest('#feedback-toggle');
+    if (!toggle) return;
+
+    const wrap = document.querySelector('#feedback-form-wrap');
+    if (!wrap) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    setExpanded(toggle, wrap, !expanded);
   });
-}
+})();
